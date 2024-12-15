@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center align-items-center vh-100 mt-10">
+        <form action="{% url 'register' %}" class="p-5 shadow rounded" method="post">
+            {% csrf_token %}
+            <h3 class="text-center">Register</h3>
+            <br>
+            <!-- Pesan error -->
+            {% for message in messages %}
+            <p class="text-danger text-center">{{ message }}</p>
+            {% endfor %}
+            <!-- Input Username -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-group mt-1">
+                    <span class="input-group-text">@</span>
+                    <input type="text" id="username" class="form-control" name="username" required>
+                </div>
+            </div>
+            <!-- Input Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-control" name="email" required>
+            </div>
+            <!-- Input Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-control" name="password" required>
+            </div>
+            <!-- Input Confirm Password -->
+            <div class="mb-3">
+                <label for="password2" class="form-label">Confirm Password</label>
+                <input type="password" id="password2" class="form-control" name="password2" required>
+            </div>
+            <!-- Tombol Submit -->
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+            <p class="text-center mt-3">
+                Have an account?
+                <a href="{% url 'login' %}">Login</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+ <div class="container">
+    <h2 class="mt-5">Profile Details</h2>
+    <p><strong>Username:</strong> {{ profile.user.username }}</p>
+    <p><strong>Email:</strong> {{ profile.user.email }}</p>
+    <p><strong>Bio:</strong> {{ profile.bio }}</p>
+    {% if profile.profile_pic %}
+    <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="img-thumbnail" width="150">
+    {% else %}
+    <img src="{% static 'image/default_profile_pics.png' %}" alt="Profile Picture" class="img-thumbnail" width="150">
+    {% endif %}
+    <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit Profile</a>
+</div>
+{% endblock %}
