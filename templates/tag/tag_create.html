@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Create Tag{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="mt-5">Create Tag</h2>
+        <form method="post" class="p-5 shadow rounded">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                <div class="mb-3">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ field.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-block">Create Tag</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

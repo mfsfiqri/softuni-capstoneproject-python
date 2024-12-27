@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Tag{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="mt-5">Tag: {{ tag.name }}</h2>
+        <div class="row">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.content|truncatewords:20 }}</p>
+                            <p class="me-3">
+                                <i class="bi bi-person-circle me-2"></i>{{ post.author }}
+                                <span>
+                                    <i class="bi bi-calendar-event me-2"></i>{{ post.formatted_created_at }}
+                                </span>
+                            </p>
+                            <p><strong>Category:</strong> <a href="{% url 'category_detail' post.category.id %}">{{ post.category.name }}</a></p>
+                            <p><strong>Tags:</strong> {{ post.get_tags }}</p>
+                            <a href="{% url 'blog_detail' post.id %}" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">No posts available for this tag.</p>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

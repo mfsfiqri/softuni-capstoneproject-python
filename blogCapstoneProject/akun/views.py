@@ -4,7 +4,9 @@ from django.contrib.auth.models import User,auth
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import Profile
-
+from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
+from .forms import ProfileEditForm
 
 def register_view(request):
     if request.method == 'POST':
@@ -52,17 +54,32 @@ def profile_detail(request):
     return render(request, 'profile/profile.html')
 
 @login_required
-def profile_detail(request):
-    profile = Profile.objects.get(user=request.user)
+def profile_detail(request, id):
+    profile = get_object_or_404(Profile, id=id)
     return render(request, 'profile/profile.html', {'profile': profile})
 
 @login_required
-def profile_edit(request):
-    profile = Profile.objects.get(user=request.user)
+def profile_edit(request, id):
+    profile = get_object_or_404(Profile, id=id)
+
     if request.method == 'POST':
-        profile.bio = request.POST['bio']
-        if 'profile_pic' in request.FILES:
-            profile.profile_pic = request.FILES['profile_pic']
-        profile.save()
-        return redirect('profile')
-    return render(request, 'profile/profile_edit.html', {'profile': profile})
+        # Pass the current instance and request.FILES
+        form = ProfileEditForm(request.POST, request.FILES, instance=profile)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect('profile', id=profile.id)
+        else:
+            # If form is invalid, show error messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.capitalize()}: {error}")
+    else:
+        # For GET request, instantiate form with current profile instance
+        form = ProfileEditForm(instance=profile)
+
+    return render(request, 'profile/profile_edit.html', {
+        'profile': profile,
+        'form': form
+    })

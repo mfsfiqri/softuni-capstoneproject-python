@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About MyBlog{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row align-items-center">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 mb-4 text-dark">
+                <span class="fw-bold">About</span> 
+                <span class="text-primary">MyBlog</span>
+            </h1>
+            <div class="lead text-muted mb-5">
+                <p class="px-md-5">
+                    Your cozy corner of the internet where stories, ideas, and inspiration come to life.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card shadow-lg border-0 rounded-3 overflow-hidden">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-pen text-primary mb-3" viewBox="0 0 16 16">
+                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                        </svg>
+                        <h2 class="card-title text-center mb-4">We're More Than Just a Blog</h2>
+                    </div>
+                    
+                    <p class="card-text mb-4">
+                        We're a group of passionate writers, dreamers, and creators who believe in the power of sharing thoughts and experiences. Whether it's life lessons, travel diaries, book reviews, or simple musings on everyday moments, <strong>MyBlog</strong> is here to connect, inspire, and entertain.
+                    </p>
+                    
+                    <div class="bg-light p-4 rounded">
+                        <p class="fst-italic text-center">
+                            Feel free to explore, leave a comment, or just relax with a cup of coffee and scroll through. After all, this is <strong>your</strong> blog as much as it is ours!
+                        </p>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <p class="h4 text-primary">
+                            Stay curious, stay inspired, and happy reading.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}

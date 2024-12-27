@@ -1,16 +1,54 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
+from .models import Profile
+from django.core.exceptions import ValidationError
 
-class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(max_length=30, required=True)
-    last_name = forms.CharField(max_length=30, required=True)
+
+class ProfileEditForm(forms.ModelForm):
+    bio = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 5,
+            'maxlength': 500,
+            'placeholder': 'Tell us about yourself (max 500 characters)'
+        }),
+        max_length=500,
+        required=False,
+        help_text='Maximum 500 characters'
+    )
+
+    profile_pic = forms.ImageField(
+        widget=forms.FileInput(attrs={
+            'class': 'form-control',
+            'accept': 'image/png,image/jpeg,image/gif'
+        }),
+        required=False,
+        help_text='Upload a profile picture (PNG, JPEG, or GIF). Max file size: 5MB.'
+    )
 
     class Meta:
-        model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        model = Profile
+        fields = ['bio', 'profile_pic']
 
-class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    def clean_profile_pic(self):
+        profile_pic = self.cleaned_data.get('profile_pic')
+
+        if profile_pic:
+            # Check file size (5MB limit)
+            if profile_pic.size > 5 * 1024 * 1024:
+                raise ValidationError("File size must be no more than 5MB.")
+
+            # Optional: Check file type (though Django's ImageField does basic image validation)
+            allowed_types = ['image/png', 'image/jpeg', 'image/gif']
+            if profile_pic.content_type not in allowed_types:
+                raise ValidationError("Only PNG, JPEG, and GIF images are allowed.")
+
+        return profile_pic
+
+    def clean_bio(self):
+        bio = self.cleaned_data.get('bio', '').strip()
+
+        # Optional additional bio validation
+        if bio and len(bio) > 500:
+            raise ValidationError("Bio cannot exceed 500 characters.")
+
+        return bio
